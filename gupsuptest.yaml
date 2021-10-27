@@ -1,0 +1,29 @@
+version: 0.2  
+
+phases:
+  install:
+    commands: 
+      - sudo apt-get update -y
+       - sudo apt-get install apache2 -y
+       - sudo apt install nodejs -y 
+        - node -v 
+    finally:  
+      - echo This always runs even if the update or install command fails 
+      
+pre_build:
+files:
+- source: /
+- destination: /var/www/html
+  
+  build: 
+    commands:
+           - cd /var/www/html
+           - sudo apt install npm
+           - npm -v
+      
+    finally:
+      - echo This always runs even if the install command fails
+  post_build: 
+    commands:
+       - sudo npm install pm2 -g
+       - pm2 start all
